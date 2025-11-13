@@ -479,6 +479,7 @@ footer {
 .footer-social .social-icons a:hover {
   background: rgba(255, 255, 255, 0.35);
   transform: scale(1.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Footer Form */
@@ -585,4 +586,5 @@ footer {
   }
 
 }
+
 
