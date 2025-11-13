@@ -71,7 +71,7 @@ body {
 }
 
 .login-btn:hover {
-  color: #5a3a7a;
+  color: white;
   transform: scale(1.05);
 }
 
@@ -585,3 +585,4 @@ footer {
   }
 
 }
+
