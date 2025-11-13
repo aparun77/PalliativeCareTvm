@@ -188,8 +188,24 @@
           <a href="https://instagram.com" target="_blank"><span class="material-icons">photo_camera</span></a>
         </div>
         <div class="social-updates">
-          <span>facebook updates</span>
-          <span>Instagram updates</span>   
+          
+          <!-- Load Facebook SDK -->
+          <div id="fb-root"></div>
+            <script async defer crossorigin="anonymous"
+                src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0">
+            </script>
+
+          <!-- Facebook Page Plugin -->
+          <div class="fb-page"
+             data-href="https://www.facebook.com/"
+             data-tabs="timeline"
+             data-width="260"
+             data-height="150"
+             data-small-header="false"
+             data-adapt-container-width="true"
+             data-hide-cover="false"
+             data-show-facepile="true">
+          </div> 
         </div>
       </div>
 
@@ -252,6 +268,7 @@
 
 
 </html>
+
 
 
 
