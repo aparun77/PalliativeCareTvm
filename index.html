@@ -60,13 +60,13 @@
         families during life’s sensitive journeys.
       </p>
       <button onclick="toggleDropdown()" class="donate-btn btn-primary">Donate</button>
-        <!-- Dropdown -->
+          <!-- Dropdown -->
        <div id="donateDropdown" class="dropdown">
         <div class="dropdown-content">
             <h3>Scan to Donate</h3>
             <img src="barcode.png" alt="Donation Barcode" class="barcode">
         </div>
-      </div>
+    </div>
       <!-- Team Section (Initially Hidden or Shown After Learn More) -->
       <div class="about-team">
         
@@ -265,23 +265,24 @@
       }
     });
   </script>
-  <script>
-      function toggleDropdown() {
-          const box = document.getElementById("donateDropdown");
+   <script>
+        function toggleDropdown() {
+            const box = document.getElementById("donateDropdown");
 
-           if (box.style.maxHeight && box.style.maxHeight !== "0px") {
-              // Close animation
-              box.style.maxHeight = "0px";
-           } else {
-               // Open animation (auto height)
-              box.style.maxHeight = box.scrollHeight + "px";
-          }
-      }
-  </script>
+            if (box.style.maxHeight && box.style.maxHeight !== "0px") {
+                // Close animation
+                box.style.maxHeight = "0px";
+            } else {
+                // Open animation (auto height)
+                box.style.maxHeight = box.scrollHeight + "px";
+            }
+        }
+    </script>
   
   <script src="script.js"></script>
 </body>
 </html>
+
 
 
 
