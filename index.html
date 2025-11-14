@@ -43,8 +43,8 @@
   </div>
 
   <!-- Carousel -->
-  <section class="carousel" id="home">
-    <div class="carousel-container" id="carouselContainer">
+  <section class="carousel" id="home loader">
+    <div class="carousel-container spinner" id="carouselContainer">
       <!-- Images uploaded from dashboard will appear here -->
     </div>
     <button class="carousel-btn prev" id="prevBtn">&#10094;</button>
@@ -68,38 +68,38 @@
         </div>
     </div>
       <!-- Team Section (Initially Hidden or Shown After Learn More) -->
-      <div class="about-team">
+      <div class="about-team loader">
         
         <!-- Minister -->
-        <div class="team-member">
+        <div class="team-member spinner">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Chief_Minister_Pinarayi_Vijayan_2023.tif/lossy-page1-800px-Chief_Minister_Pinarayi_Vijayan_2023.tif.jpg" alt="Chief Minister Photo">
           <h3>Pinarayi Vijayan</h3>
           <p>Chief Minister of Kerala</p>
         </div>
         
         <!-- Minister -->
-        <div class="team-member">
+        <div class="team-member spinner">
           <img src="https://upload.wikimedia.org/wikipedia/commons/2/29/MB_Rajesh_large_Image.jpg" alt="Minister Photo">
           <h3>M B Rajesh</h3>
           <p>Minister for Local Self-Government (LSG) in Kerala</p>
         </div>
 
         <!-- Minister-->
-        <div class="team-member">
+        <div class="team-member spinner">
           <img src="https://upload.wikimedia.org/wikipedia/commons/1/1c/Minister_Veena_George.jpg" alt="Minister Photo">
           <h3>Veena George</h3>
           <p>Minister for Health & Family Welfare in Kerala</p>
         </div>
         
         <!-- Organisation coordinators-->
-        <div class="team-member">
+        <div class="team-member spinner">
           <img src="" alt="Coordinators Photo">
           <h3>Sindhu Pillai</h3>
           <p>Coordinators</p>
         </div>
         
         <!-- Volunteers -->
-        <div class="team-member">
+        <div class="team-member spinner">
           <img src="" alt="Volunteers Photo">
           <h3>Kannan TVM</h3>
           <p>Volunteer</p>
@@ -161,9 +161,9 @@
   </section>
 
   <!-- Gallery -->
-  <section class="gallery" id="gallery">
+  <section class="gallery" id="gallery loader">
     <h2>Gallery</h2>
-    <div class="gallery-container" id="galleryContainer">
+    <div class="gallery-container" id="galleryContainer spinner">
       <!-- Images & videos uploaded from dashboard will appear here -->
     </div>
   </section>
@@ -278,10 +278,43 @@
             }
         }
     </script>
-  
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const images = document.images;
+  const totalImages = images.length;
+  let loadedCount = 0;
+
+  const finishLoading = () => {
+    document.body.classList.add("loaded");
+  };
+
+  const imageLoaded = () => {
+    loadedCount++;
+    if (loadedCount === totalImages) {
+      finishLoading();
+    }
+  };
+
+  for (let img of images) {
+    if (img.complete) {
+      imageLoaded();
+    } else {
+      img.addEventListener("load", imageLoaded);
+      img.addEventListener("error", imageLoaded); // include broken images
+    }
+  }
+
+  // Auto fallback: hide loader after 2 seconds regardless
+  setTimeout(() => {
+    finishLoading();
+  }, 2000);
+});
+</script>
+
   <script src="script.js"></script>
 </body>
 </html>
+
 
 
 
