@@ -211,7 +211,7 @@ body {
 }
 
 .btn-primary {
-  background: linear-gradient(90deg, #7a5c98, #a46fb3);
+  background: linear-gradient(90deg, #6a1b9a, #ab47bc);
   color: white;
   border: none;
   padding: 0.8rem 1.5rem;
@@ -604,6 +604,7 @@ footer {
   }
 
 }
+
 
 
 
