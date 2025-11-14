@@ -38,6 +38,9 @@ body {
   body.loaded #loader {
     display: none;
   }
+ body.loaded #loader {
+    display: none;
+  }
 
 /* Navbar */
 .navbar {
@@ -631,6 +634,7 @@ footer {
   }
 
 }
+
 
 
 
