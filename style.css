@@ -226,15 +226,16 @@ body {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-        .dropdown {
+    .dropdown {
+            width: 450px;
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.45s ease;
             background: white;
             border-radius: 8px;
-            margin-top: 10px;
+            margin: 10px auto;   /* centers the box */
             box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-            padding: 0 20px; /* content padding */
+            padding: 0 20px;     /* internal horizontal padding */
         }
 
         /* Inner content spacing */
@@ -601,6 +602,7 @@ footer {
   }
 
 }
+
 
 
 
