@@ -43,8 +43,8 @@
   </div>
 
   <!-- Carousel -->
-  <section class="carousel" id="home loader">
-    <div class="carousel-container spinner" id="carouselContainer">
+  <section class="carousel" id="home">
+    <div class="carousel-container" id="carouselContainer">
       <!-- Images uploaded from dashboard will appear here -->
     </div>
     <button class="carousel-btn prev" id="prevBtn">&#10094;</button>
@@ -278,42 +278,11 @@
             }
         }
     </script>
-  <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const images = document.images;
-  const totalImages = images.length;
-  let loadedCount = 0;
-
-  const finishLoading = () => {
-    document.body.classList.add("loaded");
-  };
-
-  const imageLoaded = () => {
-    loadedCount++;
-    if (loadedCount === totalImages) {
-      finishLoading();
-    }
-  };
-
-  for (let img of images) {
-    if (img.complete) {
-      imageLoaded();
-    } else {
-      img.addEventListener("load", imageLoaded);
-      img.addEventListener("error", imageLoaded); // include broken images
-    }
-  }
-
-  // Auto fallback: hide loader after 2 seconds regardless
-  setTimeout(() => {
-    finishLoading();
-  }, 2000);
-});
-</script>
-
+ 
   <script src="script.js"></script>
 </body>
 </html>
+
 
 
 
