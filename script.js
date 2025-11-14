@@ -173,3 +173,14 @@ const aboutTeam = document.querySelector(".about-team");
       }
     });
 
+      function toggleDropdown() {
+        const box = document.getElementById("donateDropdown");
+
+        if (box.style.maxHeight && box.style.maxHeight !== "0px") {
+            // Close animation
+             box.style.maxHeight = "0px";
+         } else {
+             // Open animation (auto height)
+              box.style.maxHeight = box.scrollHeight + "px";
+          }
+    }
