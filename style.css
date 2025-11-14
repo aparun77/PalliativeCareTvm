@@ -12,36 +12,6 @@ body {
   color: #333;
 }
 
-#loader {
-    position: fixed;
-    inset: 0;
-    background: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-  }
-
-  .spinner {
-    width: 60px;
-    height: 60px;
-    border: 6px solid #ccc;
-    border-top-color: #3498db;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-
-  body.loaded #loader {
-    display: none;
-  }
- body.loaded #loader {
-    display: none;
-  }
-
 /* Navbar */
 .navbar {
   display: flex;
@@ -256,22 +226,22 @@ body {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-    .dropdown {
-            width: 450px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.45s ease;
-            background: white;
-            border-radius: 8px;
-            margin: 10px auto;   /* centers the box */
-            box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-            padding: 0 20px;     /* internal horizontal padding */
-        }
+.dropdown {
+  width: 450px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.45s ease;
+  background: white;
+  border-radius: 8px;
+  margin: 10px auto;   /* centers the box */
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  padding: 0 20px;     /* internal horizontal padding */
+}
 
-        /* Inner content spacing */
-        .dropdown-content {
-            padding: 20px 0;
-        }
+.dropdown-content {
+  padding: 20px 0;
+}
+
 /* Gallery */
 .gallery {
   padding: 4rem 2rem;
@@ -634,6 +604,7 @@ footer {
   }
 
 }
+
 
 
 
