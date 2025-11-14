@@ -139,3 +139,37 @@ footerForm.addEventListener("submit", (e) => {
 
 const learnMoreBtn = document.getElementById("learnMoreBtn");
 const aboutTeam = document.querySelector(".about-team");
+
+ document.getElementById('ContactForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById('footerName').value.trim();
+      const email = document.getElementById('footerEmail').value.trim();
+      const message = document.getElementById('footerMessage').value.trim();
+      const feedback = document.getElementById('footerFormMessage');
+
+      if (!name || !email || !message) {
+        feedback.style.color = 'red';
+        feedback.textContent = "❌ Please fill all fields.";
+        return;
+      }
+
+      try {
+        // Get existing messages or empty array
+        const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+        // Add new message
+        messages.push({ name, email, message, date: new Date().toLocaleString() });
+        localStorage.setItem('contactMessages', JSON.stringify(messages));
+
+        feedback.style.color = 'green';
+        feedback.textContent = "✅ Message sent successfully!";
+
+        // Reset form
+        this.reset();
+      } catch (err) {
+        feedback.style.color = 'red';
+        feedback.textContent = "❌ Error sending message. Try again.";
+        console.error(err);
+      }
+    });
+
