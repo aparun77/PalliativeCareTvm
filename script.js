@@ -1,53 +1,117 @@
-// Utility
-const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+// ===== Modal Handling =====
+const modal = document.getElementById("loginModal"),
+      loginBtn = document.querySelector(".login-btn"),
+      closeBtn = document.getElementById("closeModal"),
+      loginForm = document.getElementById("loginForm"),
+      loginMessage = document.getElementById("loginMessage");
 
-// Modal toggle
-const toggle = (el, show) => el.style.display = show ? "flex" : "none";
-$(".login-btn")?.addEventListener("click", () => toggle($("#loginModal"), true));
-$("#closeModal")?.addEventListener("click", () => toggle($("#loginModal"), false));
+loginBtn?.addEventListener("click", () => modal.style.display = "flex");
+closeBtn?.addEventListener("click", () => modal.style.display = "none");
+window.addEventListener("click", e => { if(e.target === modal) modal.style.display = "none"; });
 
-// Login
-$("#loginForm")?.addEventListener("submit", e => {
-  e.preventDefault();
-  const u = $("#username").value.trim(), p = $("#password").value.trim();
-  u === "admin" && p === "12345" ? (localStorage.setItem("isLoggedIn", "true"), location.href = "dashboard.html") 
-                                   : $("#loginMessage").textContent = "❌ Invalid username or password";
-});
+// Default credentials
+const DEFAULT_USERNAME = "admin", DEFAULT_PASSWORD = "12345";
 
-// Contact forms
-["footerContactForm","ContactForm"].forEach(id => {
-  const f = $(`#${id}`); const fb = $("#footerFormMessage");
-  f?.addEventListener("submit", e => {
+loginForm?.addEventListener("submit", e => {
     e.preventDefault();
-    const n = $(`#${id}Name`).value.trim(), em = $(`#${id}Email`).value.trim(), m = $(`#${id}Message`).value.trim();
-    if(!n||!em||!m){ fb.style.color="red"; fb.textContent="❌ Please fill all fields."; return; }
-    const msgs = JSON.parse(localStorage.getItem("contactMessages")||"[]");
-    msgs.push({name:n,email:em,message:m,date:new Date().toLocaleString()});
-    localStorage.setItem("contactMessages",JSON.stringify(msgs));
-    fb.style.color="green"; fb.textContent="✅ Message sent successfully!"; f.reset();
-  });
+    const username = document.getElementById("username").value.trim(),
+          password = document.getElementById("password").value.trim();
+
+    if(username === DEFAULT_USERNAME && password === DEFAULT_PASSWORD){
+        localStorage.setItem("isLoggedIn", "true");
+        window.location.href = "dashboard.html";
+    } else loginMessage.textContent = "❌ Invalid username or password";
 });
 
-// Gallery
-$$(".gallery-container img, .gallery-container video").forEach(el =>
-  el.addEventListener("click", () => {
-    const modal = $("#modal"), img = $("#modalImage"), vid = $("#modalVideo");
-    modal.style.display="block";
-    if(el.tagName==="IMG"){ img.src=el.src; img.style.display="block"; vid.style.display="none"; }
-    else{ vid.src=el.src; vid.style.display="block"; img.style.display="none"; }
-  })
-);
-$("#modalClose")?.addEventListener("click", () => $("#modal").style.display="none");
+// ===== Gallery & Carousel =====
+window.addEventListener("DOMContentLoaded", () => {
+    const imageContainer = document.getElementById("imageContainer"),
+          videoContainer = document.getElementById("videoContainer"),
+          carouselContainer = document.getElementById("carouselContainer"),
+          images = JSON.parse(localStorage.getItem("images") || "[]"),
+          videos = JSON.parse(localStorage.getItem("videos") || "[]");
 
-// Carousel
-const images = JSON.parse(localStorage.getItem("images")||'["https://via.placeholder.com/1920x1080?text=Palliative+Care"]'), c=$("#carouselContainer");
-let index=0;
-images.forEach(src=>{ const i=document.createElement("img"); i.src=src; c.appendChild(i); });
-const show=i=>c.style.transform=`translateX(-${i*100}%)`;
-$("#nextBtn")?.addEventListener("click",()=>show(index=(index+1)%images.length));
-$("#prevBtn")?.addEventListener("click",()=>show(index=(index-1+images.length)%images.length));
-setInterval(()=>show(index=(index+1)%images.length),5000);
+    // Images
+    images.forEach(src => { const img = document.createElement("img"); img.src = src; imageContainer?.appendChild(img); });
 
-// Navigation & Dropdown
-$("#menuToggle")?.addEventListener("click",()=>$("#navLinks").classList.toggle("active"));
-$("#donateToggle")?.addEventListener("click",()=>{ const d=$("#donateDropdown"); d.style.maxHeight=d.style.maxHeight&&d.style.maxHeight!=="0px"?"0px":`${d.scrollHeight}px`; });
+    // Videos
+    videos.forEach(link => {
+        const iframe = document.createElement("iframe");
+        iframe.src = link.includes("youtube") ? link.replace("watch?v=", "embed/") : link;
+        iframe.allowFullscreen = true;
+        videoContainer?.appendChild(iframe);
+    });
+
+    // Carousel
+    if(carouselContainer){
+        const imgs = images.length ? images : ["https://via.placeholder.com/1920x1080?text=Palliative+Care"];
+        imgs.forEach(src => { const img = document.createElement("img"); img.src = src; carouselContainer.appendChild(img); });
+        startCarousel(carouselContainer);
+    }
+});
+
+// ===== Carousel Function =====
+function startCarousel(container){
+    let index = 0;
+    const slides = container.querySelectorAll("img"),
+          total = slides.length,
+          nextBtn = document.getElementById("nextBtn"),
+          prevBtn = document.getElementById("prevBtn");
+
+    function showSlide(i){ container.style.transform = `translateX(-${i*100}%)`; }
+
+    nextBtn?.addEventListener("click", () => { index = (index + 1) % total; showSlide(index); });
+    prevBtn?.addEventListener("click", () => { index = (index - 1 + total) % total; showSlide(index); });
+
+    setInterval(() => { index = (index + 1) % total; showSlide(index); }, 5000);
+}
+
+// ===== Responsive Navbar Toggle =====
+document.getElementById("menuToggle")?.addEventListener("click", () => {
+    document.getElementById("navLinks")?.classList.toggle("active");
+});
+
+// ===== Footer Contact Form =====
+document.getElementById("ContactForm")?.addEventListener("submit", function(e){
+    e.preventDefault();
+    const name = document.getElementById("footerName").value.trim(),
+          email = document.getElementById("footerEmail").value.trim(),
+          message = document.getElementById("footerMessage").value.trim(),
+          feedback = document.getElementById("footerFormMessage");
+
+    if(!name || !email || !message){
+        feedback.style.color = "red";
+        feedback.textContent = "❌ Please fill all fields.";
+        return;
+    }
+
+    try{
+        const messages = JSON.parse(localStorage.getItem("contactMessages") || "[]");
+        messages.push({ name, email, message, date: new Date().toLocaleString() });
+        localStorage.setItem("contactMessages", JSON.stringify(messages));
+        feedback.style.color = "green";
+        feedback.textContent = "✅ Message sent successfully!";
+        this.reset();
+    } catch(err){
+        feedback.style.color = "red";
+        feedback.textContent = "❌ Error sending message. Try again.";
+        console.error(err);
+    }
+});
+
+// Simple footer alert form (if separate)
+document.getElementById("footerContactForm")?.addEventListener("submit", e => {
+    e.preventDefault();
+    alert("Thank you for reaching out! We will contact you soon.");
+    e.target.reset();
+});
+
+// ===== Learn More & Dropdown =====
+document.getElementById("learnMoreBtn")?.addEventListener("click", () => {
+    document.querySelector(".about-team")?.classList.toggle("visible");
+});
+
+function toggleDropdown(){
+    const box = document.getElementById("donateDropdown");
+    box.style.maxHeight = box.style.maxHeight && box.style.maxHeight !== "0px" ? "0px" : box.scrollHeight + "px";
+}
