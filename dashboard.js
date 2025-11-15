@@ -1,54 +1,44 @@
-// ==================== DOM Elements ====================
-const $ = id => document.getElementById(id);
-const inboxToggle = $('inboxToggle'), inboxDropdown = $('inboxDropdown'), msgCount = $('msgCount');
-const logoutBtn = $('logoutBtn'), mediaInput = $('mediaUpload'), photoInput = $('photoUpload');
-const uploadMsg = $('uploadMessage'), carouselInner = $('carouselInner'), thumbContainer = $('thumbnailContainer');
+// Dynamically loads messages from localStorage into the inbox dropdown, updates the message count, and manages dropdown toggle and outside-click behavior
 
-// ==================== Helpers ====================
-const showMsg = (el, txt, type='success') => el.textContent=txt, el.className=type;
-const toggleClass = (el, cls) => el.classList.toggle(cls);
+// DOM elements
+const inboxToggle = document.getElementById('inboxToggle');
+const inboxDropdown = document.getElementById('inboxDropdown');
+const msgCount = document.getElementById('msgCount');
 
-// ==================== Inbox ====================
-const loadMessages = () => {
-    const msgs = JSON.parse(localStorage.getItem('contactMessages')||'[]');
-    msgCount.textContent = msgs.length;
-    inboxDropdown.innerHTML = msgs.length ? msgs.slice().reverse().map(m=>`<p><strong>${m.name}</strong><br><small>${m.email}</small></p>`).join('') : '<p class="no-messages">No messages</p>';
-};
-inboxToggle.onclick = e => { e.preventDefault(); toggleClass(inboxDropdown,'show'); };
-document.onclick = e => { if(!inboxToggle.contains(e.target)&&!inboxDropdown.contains(e.target)) inboxDropdown.classList.remove('show'); };
+function loadMessages() {
+  const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+  msgCount.textContent = messages.length;
 
-// ==================== Auth ====================
-if(localStorage.getItem('isLoggedIn')!=='true'){ alert('⚠️ Login first!'); location.href='index.html'; }
-logoutBtn.onclick = e => { e.preventDefault(); localStorage.removeItem('isLoggedIn'); location.href='index.html'; };
-history.pushState(null,null,location.href); onpopstate=()=>{ if(localStorage.getItem('isLoggedIn')!=='true') location.href='index.html'; };
+  inboxDropdown.innerHTML = ''; // Clear previous messages
 
-// ==================== Media Upload ====================
-const uploadMedia = () => !mediaInput.files.length?showMsg(uploadMsg,'⚠️ Select a file','error'):(showMsg(uploadMsg,'✅ Media uploaded'), mediaInput.value='');
-const clearMedia = () => { mediaInput.value=''; uploadMsg.textContent=''; };
+  if(messages.length === 0){
+    const p = document.createElement('p');
+    p.className = 'no-messages';
+    p.textContent = 'No messages';
+    inboxDropdown.appendChild(p);
+    return;
+  }
 
-// ==================== Carousel ====================
-const addPhoto = () => {
-    if(!photoInput.files.length) return showMsg(uploadMsg,'⚠️ Select a photo','error');
-    const reader = new FileReader();
-    reader.onload = e => {
-        const img = Object.assign(document.createElement('img'),{src:e.target.result,className:'carousel-item'});
-        carouselInner.appendChild(img);
-        const thumb = Object.assign(document.createElement('img'),{src:e.target.result,className:'thumbnail'});
-        thumb.onclick = ()=>showSlide(thumb.src);
-        thumbContainer.appendChild(thumb);
-    };
-    reader.readAsDataURL(photoInput.files[0]);
-    showMsg(uploadMsg,'✅ Photo added'); photoInput.value='';
-};
+  // Display messages one by one, newest first
+  messages.slice().reverse().forEach(msg => {
+    const p = document.createElement('p');
+    p.innerHTML = `<strong>${msg.name}</strong><br><small>${msg.email}</small>`;
+    inboxDropdown.appendChild(p);
+  });
+}
 
-const showSlide = src => [...carouselInner.children].forEach(img=>img.style.display=(img.src===src?'block':'none'));
-const navigateSlide = dir => {
-    const slides = [...carouselInner.children], curr = slides.findIndex(s=>s.style.display==='block');
-    if(curr===-1){ slides[0]&&(slides[0].style.display='block'); return; }
-    slides[curr].style.display='none';
-    const idx = dir==='next' ? (curr+1)%slides.length : (curr===0 ? slides.length-1 : curr-1);
-    slides[idx].style.display='block';
-};
+// Toggle dropdown visibility
+inboxToggle.addEventListener('click', (e)=>{
+  e.preventDefault();
+  inboxDropdown.classList.toggle('show');
+});
 
-// ==================== Init ====================
+// Close dropdown if clicked outside
+document.addEventListener('click', (e)=>{
+  if(!inboxToggle.contains(e.target) && !inboxDropdown.contains(e.target)){
+    inboxDropdown.classList.remove('show');
+  }
+});
+
+// Initialize messages on page load
 loadMessages();
