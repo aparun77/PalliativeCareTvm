@@ -1,12 +1,53 @@
-const modal = document.getElementById("loginModal"); const loginBtn = document.querySelector(".login-btn"); const closeBtn = document.getElementById("closeModal"); loginBtn?.addEventListener("click", () => modal.style.display = "flex"); closeBtn?.addEventListener("click", () => modal.style.display = "none"); const DEFAULT_USERNAME = "admin"; const DEFAULT_PASSWORD = "12345"; document.getElementById('loginForm').addEventListener('submit', function (e) { e.preventDefault(); const username = document.getElementById('username').value.trim(); const password = document.getElementById('password').value.trim(); const loginMessage = document.getElementById('loginMessage'); if (username === DEFAULT_USERNAME && password === DEFAULT_PASSWORD) { localStorage.setItem('isLoggedIn', 'true'); window.location.href = "dashboard.html"; } else { loginMessage.textContent = "❌ Invalid username or password"; } }); window.addEventListener("DOMContentLoaded", () => { const imageContainer = document.getElementById("imageContainer"); const videoContainer = document.getElementById("videoContainer"); const carouselContainer = document.getElementById("carouselContainer"); const images = JSON.parse(localStorage.getItem("images") || "[]"); const videos = JSON.parse(localStorage.getItem("videos") || "[]"); images.forEach(src => { const img = document.createElement("img"); img.src = src; imageContainer?.appendChild(img); }); videos.forEach(link => { const iframe = document.createElement("iframe"); iframe.src = link.includes("youtube") ? link.replace("watch?v=", "embed/") : link; iframe.allowFullscreen = true; videoContainer?.appendChild(iframe); }); if (carouselContainer) { const imgs = images.length ? images : ["https://via.placeholder.com/1920x1080?text=Palliative+Care"]; imgs.forEach(src => { const img = document.createElement("img"); img.src = src; carouselContainer.appendChild(img); }); startCarousel(carouselContainer); } }); function startCarousel(container) { let index = 0; const slides = container.querySelectorAll("img"); const total = slides.length; const nextBtn = document.getElementById("nextBtn"); const prevBtn = document.getElementById("prevBtn"); function showSlide(i) { container.style.transform = `translateX(-${i * 100}%)`; } nextBtn?.addEventListener("click", () => { index = (index + 1) % total; showSlide(index); }); prevBtn?.addEventListener("click", () => { index = (index - 1 + total) % total; showSlide(index); }); setInterval(() => { index = (index + 1) % total; showSlide(index); }, 5000); } const menuToggle = document.getElementById("menuToggle"); const navLinks = document.getElementById("navLinks"); menuToggle?.addEventListener("click", () => { navLinks.classList.toggle("active"); }); const footerForm = document.getElementById("footerContactForm"); footerForm?.addEventListener("submit", (e) => { e.preventDefault(); alert("Thank you for reaching out! We will contact you soon."); footerForm.reset(); }); document.getElementById('ContactForm').addEventListener('submit', function (e) { e.preventDefault(); const name = document.getElementById('footerName').value.trim(); const email = document.getElementById('footerEmail').value.trim(); const message = document.getElementById('footerMessage').value.trim(); const feedback = document.getElementById('footerFormMessage'); if (!name || !email || !message) { feedback.style.color = 'red'; feedback.textContent = "❌ Please fill all fields."; return; } try { const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]'); messages.push({ name, email, message, date: new Date().toLocaleString() }); localStorage.setItem('contactMessages', JSON.stringify(messages)); feedback.style.color = 'green'; feedback.textContent = "✅ Message sent successfully!"; this.reset(); } catch (err) { feedback.style.color = 'red'; feedback.textContent = "❌ Error sending message. Try again."; console.error(err); } }); function toggleDropdown() { const box = document.getElementById("donateDropdown"); if (box.style.maxHeight && box.style.maxHeight !== "0px") { box.style.maxHeight = "0px"; } else { box.style.maxHeight = box.scrollHeight + "px"; } }
-document.getElementById('loginBtn').addEventListener('click', () => document.getElementById('loginModal').style.display = 'block');
-document.getElementById('closeModal').addEventListener('click', () => document.getElementById('loginModal').style.display = 'none');
-function toggleDropdown() { document.getElementById('donateDropdown').classList.toggle('show'); }
-document.getElementById('nextBtn').addEventListener('click', () => { currentIndex = (currentIndex + 1) % images.length; document.getElementById('carouselContainer').style.backgroundImage = `url(${images[currentIndex]})`; });
-document.getElementById('prevBtn').addEventListener('click', () => { currentIndex = (currentIndex - 1 + images.length) % images.length; document.getElementById('carouselContainer').style.backgroundImage = `url(${images[currentIndex]})`; });
-document.getElementById('loginForm').addEventListener('submit', e => { e.preventDefault(); document.getElementById('loginError').style.display = (document.getElementById('username').value === 'admin' && document.getElementById('password').value === 'password') ? 'none' : 'block'; });
-document.getElementById('contactForm').addEventListener('submit', e => { e.preventDefault(); const name = document.querySelector('#contactForm input[type="text"]').value; const email = document.querySelector('#contactForm input[type="email"]').value; const message = document.querySelector('#contactForm textarea').value; if (!name || !email || !message) { alert('Please fill out all fields.'); } else { alert('Message sent successfully!'); } });
-document.querySelectorAll('.gallery-container img').forEach(img => { img.addEventListener('click', () => { document.getElementById('modal').style.display = 'block'; document.getElementById('modalImage').src = img.src; }); });
-document.querySelectorAll('.gallery-container video').forEach(video => { video.addEventListener('click', () => { document.getElementById('modal').style.display = 'block'; document.getElementById('modalVideo').src = video.src; document.getElementById('modalVideo').style.display = 'block'; document.getElementById('modalImage').style.display = 'none'; }); });
-document.getElementById('modalClose').addEventListener('click', () => { document.getElementById('modal').style.display = 'none'; });
-document.getElementById('menuToggle').addEventListener('click', () => { document.getElementById('navLinks').classList.toggle('active'); });
+// Utility
+const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+
+// Modal toggle
+const toggle = (el, show) => el.style.display = show ? "flex" : "none";
+$(".login-btn")?.addEventListener("click", () => toggle($("#loginModal"), true));
+$("#closeModal")?.addEventListener("click", () => toggle($("#loginModal"), false));
+
+// Login
+$("#loginForm")?.addEventListener("submit", e => {
+  e.preventDefault();
+  const u = $("#username").value.trim(), p = $("#password").value.trim();
+  u === "admin" && p === "12345" ? (localStorage.setItem("isLoggedIn", "true"), location.href = "dashboard.html") 
+                                   : $("#loginMessage").textContent = "❌ Invalid username or password";
+});
+
+// Contact forms
+["footerContactForm","ContactForm"].forEach(id => {
+  const f = $(`#${id}`); const fb = $("#footerFormMessage");
+  f?.addEventListener("submit", e => {
+    e.preventDefault();
+    const n = $(`#${id}Name`).value.trim(), em = $(`#${id}Email`).value.trim(), m = $(`#${id}Message`).value.trim();
+    if(!n||!em||!m){ fb.style.color="red"; fb.textContent="❌ Please fill all fields."; return; }
+    const msgs = JSON.parse(localStorage.getItem("contactMessages")||"[]");
+    msgs.push({name:n,email:em,message:m,date:new Date().toLocaleString()});
+    localStorage.setItem("contactMessages",JSON.stringify(msgs));
+    fb.style.color="green"; fb.textContent="✅ Message sent successfully!"; f.reset();
+  });
+});
+
+// Gallery
+$$(".gallery-container img, .gallery-container video").forEach(el =>
+  el.addEventListener("click", () => {
+    const modal = $("#modal"), img = $("#modalImage"), vid = $("#modalVideo");
+    modal.style.display="block";
+    if(el.tagName==="IMG"){ img.src=el.src; img.style.display="block"; vid.style.display="none"; }
+    else{ vid.src=el.src; vid.style.display="block"; img.style.display="none"; }
+  })
+);
+$("#modalClose")?.addEventListener("click", () => $("#modal").style.display="none");
+
+// Carousel
+const images = JSON.parse(localStorage.getItem("images")||'["https://via.placeholder.com/1920x1080?text=Palliative+Care"]'), c=$("#carouselContainer");
+let index=0;
+images.forEach(src=>{ const i=document.createElement("img"); i.src=src; c.appendChild(i); });
+const show=i=>c.style.transform=`translateX(-${i*100}%)`;
+$("#nextBtn")?.addEventListener("click",()=>show(index=(index+1)%images.length));
+$("#prevBtn")?.addEventListener("click",()=>show(index=(index-1+images.length)%images.length));
+setInterval(()=>show(index=(index+1)%images.length),5000);
+
+// Navigation & Dropdown
+$("#menuToggle")?.addEventListener("click",()=>$("#navLinks").classList.toggle("active"));
+$("#donateToggle")?.addEventListener("click",()=>{ const d=$("#donateDropdown"); d.style.maxHeight=d.style.maxHeight&&d.style.maxHeight!=="0px"?"0px":`${d.scrollHeight}px`; });
