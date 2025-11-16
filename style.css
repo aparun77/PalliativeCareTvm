@@ -227,7 +227,7 @@ body {
 }
 
 .dropdown {
-  width: 250px;
+  width: 320px;
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.45s ease;
@@ -604,6 +604,7 @@ footer {
   }
 
 }
+
 
 
 
