@@ -107,11 +107,12 @@ document.getElementById("footerContactForm")?.addEventListener("submit", e => {
 });
 
 // ===== Learn More & Dropdown =====
-document.getElementById("learnMoreBtn")?.addEventListener("click", () => {
-    document.querySelector(".about-team")?.classList.toggle("visible");
-});
+const btn = document.querySelector('.donate-btn');
+const dropdown = document.querySelector('.dropdown');
 
-function toggleDropdown(){
-    const box = document.getElementById("donateDropdown");
-    box.style.maxHeight = box.style.maxHeight && box.style.maxHeight !== "0px" ? "0px" : box.scrollHeight + "px";
-}
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    dropdown.classList.toggle('show');
+  });
+
+window.addEventListener('click', () => dropdown.classList.remove('show'));
