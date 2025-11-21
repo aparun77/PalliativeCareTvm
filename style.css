@@ -411,15 +411,9 @@ body {
 }
 
 /*  Large screens: 721px+ */
-@media (min-width: 721px) {
-  .card-container {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
 @media (min-width: 720px) {
   .card-container {
-    width: 450px;
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -630,6 +624,7 @@ footer {
   }
 
 }
+
 
 
 
