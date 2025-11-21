@@ -396,15 +396,6 @@ body {
   justify-items: center;
 }
 
-.card-container {
-  display: grid;
-  gap: 25px;
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  justify-items: center;
-}
-
 /* Small phones: 0–450px */
 @media (max-width: 450px) {
   .card-container {
@@ -639,6 +630,7 @@ footer {
   }
 
 }
+
 
 
 
