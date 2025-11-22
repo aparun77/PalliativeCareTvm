@@ -583,6 +583,7 @@ footer {
 }
 
 /* Footer Form */
+/* Base Styles */
 .footer-form input,
 .footer-form textarea {
   width: 100%;
@@ -591,6 +592,7 @@ footer {
   border: none;
   border-radius: 8px;
   font-size: 0.95rem;
+  box-sizing: border-box;
 }
 
 .footer-form button {
@@ -610,6 +612,48 @@ footer {
 .footer-form button:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Extra small phones: 0–320px */
+@media (max-width: 320px) {
+  .footer-form input,
+  .footer-form textarea {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .footer-form button {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Small phones: 321–450px */
+@media (min-width: 321px) and (max-width: 450px) {
+  .footer-form input,
+  .footer-form textarea {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+
+  .footer-form button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Medium / tablets: 451–720px */
+@media (min-width: 451px) and (max-width: 720px) {
+  .footer-form input,
+  .footer-form textarea {
+    padding: 0.65rem;
+    font-size: 0.95rem;
+  }
+
+  .footer-form button {
+    padding: 0.65rem 1.4rem;
+    font-size: 0.95rem;
+  }
 }
 
 /* Footer bottom text */
@@ -731,4 +775,3 @@ body {
   color: var(--text);
   transition: background 0.3s ease, color 0.3s ease;
 }
-
