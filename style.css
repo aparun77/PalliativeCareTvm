@@ -535,7 +535,7 @@ footer {
 .footer-social,
 .footer-form {
   flex: 1;
-  min-width: 250px;
+  width: 320px;
 }
 
 .footer-contact h3,
@@ -775,3 +775,4 @@ body {
   color: var(--text);
   transition: background 0.3s ease, color 0.3s ease;
 }
+
