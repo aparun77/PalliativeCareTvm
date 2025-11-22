@@ -208,6 +208,7 @@ body {
   max-width: 700px;
   margin: 0 auto 2rem auto;
   font-size: 1.1rem;
+  color: #555;
 }
 
 .btn-primary {
@@ -227,7 +228,10 @@ body {
 }
 
 .dropdown {
-  width: 320px;
+  width: 90%;
+  /* default width: responsive */
+  max-width: 320px;
+  /* limits size on larger screens */
   max-height: 0;
   opacity: 0;
   overflow: hidden;
@@ -235,10 +239,8 @@ body {
   background: white;
   border-radius: 8px;
   margin: 10px auto;
-  /* centers the box */
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
   padding: 0 20px;
-  /* internal horizontal padding */
 }
 
 .dropdown-content {
@@ -248,13 +250,51 @@ body {
 
 .dropdown-content h3 {
   margin-bottom: 15px;
+  color: #555;
 }
 
 .dropdown-content .barcode {
-  width: 150px;
+  width: 80%;
+  max-width: 150px;
   height: auto;
 }
 
+/* Small phones: 320px */
+@media (max-width: 320px) {
+  .dropdown {
+    width: 95%;
+    max-width: 280px;
+    padding: 0 10px;
+  }
+
+  .dropdown-content .barcode {
+    max-width: 120px;
+  }
+}
+
+/* Medium phones: 450px */
+@media (min-width: 321px) and (max-width: 450px) {
+  .dropdown {
+    width: 90%;
+    max-width: 350px;
+  }
+
+  .dropdown-content .barcode {
+    max-width: 140px;
+  }
+}
+
+/* Tablets / small desktops: 720px */
+@media (min-width: 451px) and (max-width: 720px) {
+  .dropdown {
+    width: 80%;
+    max-width: 500px;
+  }
+
+  .dropdown-content .barcode {
+    max-width: 180px;
+  }
+}
 
 /* Gallery */
 .gallery {
@@ -459,12 +499,10 @@ body {
 .card h3 {
   font-size: 1.2rem;
   margin-bottom: 8px;
-  color: #222;
 }
 
 .card p {
   font-size: 0.95rem;
-  color: #555;
   line-height: 1.4;
 }
 
@@ -637,4 +675,49 @@ footer {
     height: auto;
   }
 
+}
+
+footer {
+  color: var(--text);
+}
+
+.modal-content {
+  background: var(--card-bg);
+  color: var(--text);
+}
+
+.gallery {
+  background: var(--section-bg);
+}
+
+.card {
+  background: var(--card-bg);
+  color: var(--text);
+}
+
+/* ==========================
+   AUTO DARK MODE VARIABLES
+   ========================== */
+:root {
+  --bg: #ffffff;
+  --text: #222222;
+  --card-bg: #ffffff;
+  --section-bg: #f8f4fb;
+}
+
+/* Automatic dark mode from system */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121212;
+    --text: #e0e0e0;
+    --card-bg: #1e1e1e;
+    --section-bg: #1a141f;
+  }
+}
+
+/* Body applies the variables */
+body {
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s ease, color 0.3s ease;
 }
