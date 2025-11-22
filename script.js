@@ -106,13 +106,13 @@ document.getElementById("footerContactForm")?.addEventListener("submit", e => {
     e.target.reset();
 });
 
-// ===== Learn More & Dropdown =====
-const btn = document.querySelector('.donate-btn');
-const dropdown = document.querySelector('.dropdown');
-
-  btn.addEventListener('click', e => {
-    e.stopPropagation();
-    dropdown.classList.toggle('show');
+ // Close dropdown if clicked outside
+  window.addEventListener("click", function(event) {
+    const dropdown = document.getElementById("donateDropdown");
+    const button = document.querySelector(".donate-btn");
+    if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+      dropdown.style.maxHeight = "0";
+      dropdown.style.opacity = "0";
+    }
   });
 
-window.addEventListener('click', () => dropdown.classList.remove('show'));
