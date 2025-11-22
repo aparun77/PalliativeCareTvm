@@ -206,3 +206,19 @@ document.getElementById('ContactForm').addEventListener('submit', function (e) {
       dropdown.style.opacity = "0";
     }
   });
+
+  // Auto-apply system dark mode on change (mobile/tablet/desktop)
+function applySystemTheme() {
+  const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+  document.documentElement.style.setProperty("--bg", dark ? "#121212" : "#ffffff");
+  document.documentElement.style.setProperty("--text", dark ? "#e0e0e0" : "#222222");
+  document.documentElement.style.setProperty("--card-bg", dark ? "#1e1e1e" : "#ffffff");
+  document.documentElement.style.setProperty("--section-bg", dark ? "#1a141f" : "#f8f4fb");
+}
+
+// Run on load
+applySystemTheme();
+
+// Detect changes live
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applySystemTheme);
